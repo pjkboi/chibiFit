@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chibi Fit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AvengersDB App</title>
+    <!--jQuery-->
+    <script src="js/lib/jquery-2.1.4.js"></script>
+    <!--jQuery mobile-->
+    <script src="js/lib/jquery.mobile-1.4.5.js"></script>
+    <!--jQuery mobile css-->
+    <link rel="stylesheet" type="text/css" href="css/lib/jquery.mobile-1.4.5.css">
+    <!--jQuery validation lib-->
+    <script src="js/lib/jquery.validate.js"></script>
+    <!--our scripts-->
+    <script src="js/database.js"></script>
+    <script src="js/chibiFitDAL.js"></script>
+    <script src="js/chibiFitFacade.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="cordova.js"></script>
+    <!--our stylesheet-->
+    <link rel="stylesheet" type="text/css" href="css/mystyle.css">
+    <link rel="stylesheet" type="text/css" href="css/loginStyles.css">
+    <link rel="stylesheet" type="text/css" href="css/aboutStyles.css">
+    <!-- OUR COLOUR SCHEME A09ABC-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
+<body>
+
+<!--Log-In Page-->
+<div data-role="page" id="loginPage">
+    <section data-role="content">
+        <div align="center" id="loginContent">
+            <img src="img/onePunchMan.png" id="loginIcon" alt="loginIcon">
+            <h2>chibi.Fit<br><small>Journals</small></h2>
+            <button data-role="button" id="btnCreateEntry">Create</button>
+            <button data-role="button" id="btnViewEntry">View</button>
+        </div>
+    </section>
+    <footer data-role="footer" data-position="fixed">
+        <h1 id="loginTitle">chibi.Fit</h1>
+    </footer>
+</div>
+
+<!--Create Journal Entry Page-->
+<div data-role="page" id="createJournalEntryPage">
+    <section data-role="content">
+        <div align="center" id="createJournalEntry" >
+            <h1 class="loginHeader">Create Entry</h1>
+            <form action="newJournalEntryFrm" id="newJournalEntryFrm" >
+                <label for="txtName">Name</label>
+                <input type="text" id="txtName" name="txtName" data-mini="true">
+                <br>
+                <label for="txtHeight">Height(cm)</label>
+                <input type="text" id="txtHeight" name="txtHeight" data-mini="true">
+                <br>
+                <label for="txtWeight">Weight(kg)</label>
+                <input type="text" id="txtWeight" name="txtWeight" data-mini="true">
+                <br>
+                <label for="txtBMI">BMI</label>
+                <input type="text" id="txtBMI" name="txtBMI" readonly data-mini="true">
+                <br>
+                <label for="listExercise">Muscle Group</label>
+                <select id="listExercise">
+                </select>
+                <input type="hidden" id="txtDate" name="txtDate">
+                <br>
+                <label for="btnCapturePhoto">Take a Progress Photo</label>
+                <button type="button" id="btnCapturePhoto" name="btnCapturePhoto"
+                        data-iconpos="left"
+                        data-inline="false"
+                        style="width: 50%">Capture
+                </button>
+                <button type="submit" data-role="button"  id="newJournalEntry" name="newJournalEntry">Create</button>
+                <button type="reset" data-role="button" id="btnNewUserReset" name="btnNewUserReset">Reset</button>
+            </form>
+        </div>
+    </section>
+    <footer data-role="footer" data-position="fixed">
+        <h1 id="loginTitle"> <a href="#" class="btnHome" name="btnHome" data-role="button" data-transition="slide" data-iconpos="notext" data-icon="home"></a>  chibi.Fit</h1>
+        <!--<a href="#loginPage" data-icon="home" data-transition="slide" data-iconpos="notext" data-role="button"></a>-->
+        <div data-role="panel" id="createJournalEntryPanel"
+             data-display="overlay" data-position="left">
+            <div data-role="controlgroup" data-corners="false">
+                <a href="#journalPage" data-transition="slide" data-role="button">Entries</a>
+                <a href="#exercisePage" data-transition="slide" data-role="button">Exercise</a>
+                <a href="#aboutPage" data-transition="slide" data-role="button">About</a>
+            </div>
+
+        </div>
+        <div id="header" data-role="header">
+            <a id="bars-button" data-icon="bars" class="ui-btn-left" href="#createJournalEntryPanel">menu</a>
+        </div>
+    </footer>
+</div>
+
+<!--View Journals Page-->
+<div data-role="page" id="journalPage">
+    <div data-role="content" align="center">
+        <h2>Journal Entries  <br><a href="#" id="btnCreateJournalEntry" data-transition="slide" data-mini="true" data-inline="true" data-role="button" data-icon="plus" >Add</a></h2>
+
+        <label for="imgSnap">Progress</label>
+        <img id="imgSnap" name="imgSnap" src="" alt="Photo goes here">
+        <ul id="lvAll" data-role="listview" class="ui-listview-inset">
+            <li></li>
+        </ul>
+    </div>
+    <footer data-role="footer" data-position="fixed">
+        <h1 id="loginTitle"> <a href="#" class="btnHome" name="btnHome" data-role="button" data-transition="slide" data-iconpos="notext" data-icon="home"></a>  chibi.Fit</h1>
+        <div data-role="panel" id="navpanel"
+             data-display="overlay" data-position="left">
+            <div data-role="controlgroup" data-corners="false">
+                <a href="#journalPage" data-transition="slide" data-role="button">Entries</a>
+                <a href="#exercisePage" data-transition="slide" data-role="button">Exercise</a>
+                <a href="#aboutPage" data-transition="slide" data-role="button">About</a>
+            </div>
+        </div>
+        <div id="header" data-role="header">
+            <a id="bars-button" data-icon="bars" class="ui-btn-left" href="#navpanel">menu</a>
+        </div>
+    </footer>
+</div>
+
+<!--Update Journal Entry Page-->
+<div data-role="page" id="updateJournalEntryPage">
+    <section data-role="content">
+        <div align="center" id="updateJournal" >
+            <h1 class="loginHeader">Update Entry</h1>
+            <form action="updateJournalEntryFrm" id="updateJournalEntryFrm" >
+                <label for="txtupdateName">Name</label>
+                <input type="text" id="txtupdateName" name="txtName" data-mini="true">
+                <br>
+                <label for="txtupdateHeight">Height (FeetInches)</label>
+                <input type="text" id="txtupdateHeight" name="txtHeight" data-mini="true">
+                <br>
+                <label for="txtupdateWeight">Weight(Lb)</label>
+                <input type="text" id="txtupdateWeight" name="txtWeight" data-mini="true">
+                <br>
+                <label for="txtupdateBMI">BMI</label>
+                <input type="text" id="txtupdateBMI" name="txtupdateBMI"  readonly data-mini="true">
+                <br>
+                <label for="updatelistExercise">Muscle Group</label>
+                <select id="updatelistExercise">
+                </select>
+                <input type="hidden" id="txtDateUpdate" name="txtDateUpdate">
+                <br>
+                <button type="submit" data-role="button"  id="btnupdateJournalEntry" name="btnupdateJournalEntry">Update</button>
+                <button type="submit" data-role="button" id="btnDelete" name="btnDelete">Delete</button>
+            </form>
+            <button data-role="button" id="btnCancel" name="btnCancel">Cancel</button>
+        </div>
+    </section>
+</div>
+
+<!--Exercise Page-->
+<div data-role="page" id="exercisePage">
+    <div data-role="content" align="center" id="exercisePageContent">
+        <h2>Exercise Page</h2>
+        <!--Chest-->
+        <a href="#chestPopup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline"  data-rel="popup" data-position-to="window"><img
+                src="img/muscleIcons/chestIcon.png" alt="Chest Icon"><br>Chest</a>
+        <div data-role="popup" id="chestPopup" class="ui-content" data-theme="a">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <table data-role="table" id="chestTable" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="a" data-column-btn-text="Chest Routine" data-column-popup-theme="a">
+                <thead>
+                <tr class="ui-bar-d">
+                    <th>Exercise</th>
+                    <th>Set</th>
+                    <th>Reps</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Dumbbell Bench Press</td>
+                    <td>4-6</td>
+                    <td>10-12</td>
+                </tr>
+                <tr>
+                    <td>Incline Fly</td>
+                    <td>3</td>
+                    <td>10-12</td>
+                </tr>
+                <tr>
+                    <td>Leverage Decline Press</td>
+                    <td>3</td>
+                    <td>8-10</td>
+                </tr>
+                <tr>
+                    <td>Pec-deck machine</td>
+                    <td>3</td>
+                    <td>12</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--Back-->
+        <a href="#backPopup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline"  data-rel="popup" data-position-to="window"><img
+                src="img/muscleIcons/backIcon.png" alt="Back Icon"><br>Back</a>
+        <div data-role="popup" id="backPopup" class="ui-content" data-theme="a">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <table data-role="table" id="backTable" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="a" data-column-btn-text="Back Routine" data-column-popup-theme="a">
+                <thead>
+                <tr class="ui-bar-d">
+                    <th>Exercise</th>
+                    <th>Set</th>
+                    <th>Reps</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Barbell Deadlift</td>
+                    <td>5</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td>Chin-up</td>
+                    <td>3</td>
+                    <td>25</td>
+                </tr>
+                <tr>
+                    <td>Bent Over Barbell Row</td>
+                    <td>3</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>Power Clean</td>
+                    <td>5</td>
+                    <td>10</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--Biceps-->
+        <a href="#biceipPopup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline"  data-rel="popup" data-position-to="window"><img
+                src="img/muscleIcons/bicepsIcon.png" alt="Biceps Icon"><br>Biceps</a>
+        <div data-role="popup" id="biceipPopup" class="ui-content" data-theme="a">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <table data-role="table" id="bicepTable" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="a" data-column-btn-text="Biceps Routine" data-column-popup-theme="a">
+                <thead>
+                <tr class="ui-bar-d">
+                    <th>Exercise</th>
+                    <th>Set</th>
+                    <th>Reps</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Seated dumbell curl</td>
+                    <td>4</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>Dip</td>
+                    <td>4</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>EZ-bar curl</td>
+                    <td>4</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Reverse grip push-down</td>
+                    <td>5</td>
+                    <td>12</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--Triceps-->
+        <a href="#tricepPopup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline"  data-rel="popup" data-position-to="window"><img
+                src="img/muscleIcons/tricepsIcon.png" alt="Triceps Icon"><br>Triceps</a>
+        <div data-role="popup" id="tricepPopup" class="ui-content" data-theme="a">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <table data-role="table" id="tricepTable" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="a" data-column-btn-text="Triceps Routine" data-column-popup-theme="a">
+                <thead>
+                <tr class="ui-bar-d">
+                    <th>Exercise</th>
+                    <th>Set</th>
+                    <th>Reps</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Triceps Pushdown</td>
+                    <td>2</td>
+                    <td>6-8</td>
+                </tr>
+                <tr>
+                    <td>Incline Barbell Tricep Extension</td>
+                    <td>2</td>
+                    <td>8-10</td>
+                </tr>
+                <tr>
+                    <td>Close-Grip Barbell Bench Press</td>
+                    <td>3</td>
+                    <td>6-8</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--Core-->
+        <a href="#corePopup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline"  data-rel="popup" data-position-to="window"><img
+                src="img/muscleIcons/coreIcon.png" alt="Core Icon"><br>Core</a>
+        <div data-role="popup" id="corePopup" class="ui-content" data-theme="a">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <table data-role="table" id="coreTable" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="a" data-column-btn-text="Core Routine" data-column-popup-theme="a">
+                <thead>
+                <tr class="ui-bar-d">
+                    <th>Exercise</th>
+                    <th>Set</th>
+                    <th>Reps</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Plank</td>
+                    <td>3</td>
+                    <td>60sec.</td>
+                </tr>
+                <tr>
+                    <td>Side Plank</td>
+                    <td>3</td>
+                    <td>60sec.</td>
+                </tr>
+                <tr>
+                    <td>V-Sit</td>
+                    <td>3</td>
+                    <td>10</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--Legs-->
+        <a href="#legsPopup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline"  data-rel="popup" data-position-to="window"><img
+                src="img/muscleIcons/legsIcon.png" alt="Legs Icon"><br>Legs</a>
+        <div data-role="popup" id="legsPopup" class="ui-content" data-theme="a">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <table data-role="table" id="legTable" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="a" data-column-btn-text="Leg Routine" data-column-popup-theme="a">
+                <thead>
+                <tr class="ui-bar-d">
+                    <th>Exercise</th>
+                    <th>Set</th>
+                    <th>Reps</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Barbell Squat</td>
+                    <td>4</td>
+                    <td>4-6</td>
+                </tr>
+                <tr>
+                    <td>Dumbbell Lunges</td>
+                    <td>4</td>
+                    <td>12 each leg</td>
+                </tr>
+                <tr>
+                    <td>Leg Press</td>
+                    <td>3</td>
+                    <td>12-15</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <footer data-role="footer" data-position="fixed">
+        <h1 id="loginTitle"> <a href="#" class="btnHome" name="btnHome" data-role="button" data-transition="slide" data-iconpos="notext" data-icon="home"></a>  chibi.Fit</h1>
+        <div data-role="panel" id="navpanelExercise" data-theme="a"
+             data-display="overlay" data-position="left">
+            <div data-role="controlgroup" data-corners="false">
+                <a href="#journalPage" data-transition="slide" data-role="button">Entries</a>
+                <a href="#exercisePage" data-transition="slide" data-role="button">Exercise</a>
+                <a href="#aboutPage" data-transition="slide" data-role="button">About</a>
+            </div>
+        </div>
+        <div  data-role="header">
+            <a  data-icon="bars" class="ui-btn-left menuBtn" href="#navpanelExercise">menu</a>
+        </div>
+    </footer>
+</div>
+
+<!--About Page-->
+
+<div data-role="page" id="aboutPage">
+    <div data-role="content" id="aboutPageContent">
+        <h2>About</h2>
+        <h3>developed by. </h3>
+        <p>Pj Khamvongsa &amp; Tuan Truong</p>
+        <button type="button" id="btnClear" name="btnClear" data-icon="minus">Clear Database
+        </button>
+    </div>
+    <footer data-role="footer" data-position="fixed">
+        <h1 id="loginTitle"> <a href="#" class="btnHome" name="btnHome" data-role="button" data-transition="slide" data-iconpos="notext" data-icon="home"></a>  chibi.Fit</h1>
+        <div data-role="panel" id="navpanelAbout" data-theme="a"
+             data-display="overlay" data-position="left">
+            <div data-role="controlgroup" data-corners="false">
+                <a href="#journalPage" data-transition="slide" data-role="button">Entries</a>
+                <a href="#exercisePage" data-transition="slide" data-role="button">Exercise</a>
+                <a href="#aboutPage" data-transition="slide" data-role="button">About</a>
+            </div>
+        </div>
+        <div  data-role="header">
+            <a data-icon="bars" class="ui-btn-left" href="#navpanelAbout">menu</a>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

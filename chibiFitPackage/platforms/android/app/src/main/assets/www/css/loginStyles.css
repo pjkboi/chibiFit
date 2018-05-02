@@ -1,0 +1,27 @@
+#loginIcon{
+    margin-top: 50px;
+    width: auto;
+    height: 150px;
+}
+div.ui-input-text {
+    width: 50% !important
+}
+
+#btnLogin, #newJournalEntry, #btnNewUserReset{
+    width: 50%;
+    background-color: #A09ABC;
+    color: #ffffff;
+}
+.loginHeader{
+    color: #A09ABC;
+}
+#createJournalEntry{
+
+}
+
+#loginTitle{
+    float: right;
+    font-size: 30px;
+    color: #A09ABC;
+    text-decoration: overline;
+}
